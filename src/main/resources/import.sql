@@ -1,0 +1,12 @@
+INSERT INTO categories(name) VALUES ('Esportes');
+INSERT INTO categories(name) VALUES ('Notícias');
+INSERT INTO categories(name) VALUES ('Rock');
+INSERT INTO categories(name) VALUES ('Pop');
+INSERT INTO categories(name) VALUES ('Sertanejo');
+INSERT INTO categories(name) VALUES ('Gospel');
+INSERT INTO categories(name) VALUES ('Católica');
+INSERT INTO categories(name) VALUES ('Carnaval');
+INSERT INTO categories(name) VALUES ('Samba e Pagode');
+INSERT INTO cities(name,state) VALUES ('São Paulo','SP');
+INSERT INTO cities(name,state) VALUES ('Campos do Jordão','SP');
+INSERT INTO cities(name,state) VALUES ('Rio de Janeiro','RJ');
