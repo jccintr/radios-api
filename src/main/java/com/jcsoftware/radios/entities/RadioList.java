@@ -1,7 +1,9 @@
 package com.jcsoftware.radios.entities;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -26,7 +29,10 @@ public class RadioList {
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	private User client;
+	private User owner;
+	
+	@OneToMany(mappedBy = "list")
+	private Set<ListItem> items = new HashSet<>();
 
 	@Column(columnDefinition="TIMESTAMP WITHOUT TIME ZONE")
 	private Instant createdAt;
@@ -37,11 +43,11 @@ public class RadioList {
 		
 	}
 	
-	public RadioList(Long id, String name, User client) {
+	public RadioList(Long id, String name, User owner) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.client = client;
+		this.owner = owner;
 	}
 	
 	
@@ -61,15 +67,33 @@ public class RadioList {
 		this.name = name;
 	}
 
-	public User getClient() {
-		return client;
+	public User getOwner() {
+		return owner;
 	}
 
-	public void setClient(User client) {
-		this.client = client;
+	public void setowner(User owner) {
+		this.owner = owner;
 	}
 	
 	
+
+	public Set<ListItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<ListItem> items) {
+		this.items = items;
+	}
+	
+	
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	public Instant getUpdatedAt() {
+		return updatedAt;
+	}
 
 	@Override
 	public int hashCode() {
