@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class CityController {
 	@Autowired
 	private CityService service;
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping()
 	public ResponseEntity<CityDTO> insert(@RequestBody NewCityDTO dto){
 		CityDTO cityDTO = service.insert(dto);
@@ -48,6 +50,7 @@ public class CityController {
 		return ResponseEntity.ok().body(cityDTO);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value="/{id}")
 	public ResponseEntity<CityDTO> update(@PathVariable Long id, @RequestBody CityDTO dto){
 		
@@ -56,6 +59,7 @@ public class CityController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id){
 		
