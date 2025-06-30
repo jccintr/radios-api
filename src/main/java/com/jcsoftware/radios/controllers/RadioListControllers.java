@@ -1,6 +1,7 @@
 package com.jcsoftware.radios.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,13 @@ public class RadioListControllers {
 			
 			return ResponseEntity.created(uri).body(radioListDTO);
 	}
+	 
+	 @PreAuthorize("hasRole('ROLE_ADMIN')")
+	 @GetMapping
+		public ResponseEntity<List<RadioListDTO>> findAll(){
+			List<RadioListDTO> lists = service.findAll();
+	        return ResponseEntity.ok().body(lists);
+		}
 
 }
 

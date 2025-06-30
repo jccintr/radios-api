@@ -1,11 +1,15 @@
 package com.jcsoftware.radios.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.jcsoftware.radios.entities.Category;
 import com.jcsoftware.radios.entities.RadioList;
+import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.NewRadioListDTO;
 import com.jcsoftware.radios.entities.dtos.RadioListDTO;
 import com.jcsoftware.radios.repositories.RadioListRepository;
@@ -31,6 +35,11 @@ public class RadioListService {
 		newRadioList.setOwner(userService.me());
 		newRadioList = repository.save(newRadioList);
 		return new RadioListDTO(newRadioList);
+	}
+
+	public List<RadioListDTO> findAll() {
+		List<RadioList> lists = repository.findAll();
+		return lists.stream().map(RadioListDTO::new).toList();
 	}
 
 }
