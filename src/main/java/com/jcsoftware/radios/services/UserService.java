@@ -47,10 +47,10 @@ public class UserService implements UserDetailsService {
 	}
 	
 	@Transactional(readOnly=true)
-	public UserDTO me() {
+	public User me() {
 
 		User user = auth();
-		return new UserDTO(user);
+		return user;
 		
 	}
 	

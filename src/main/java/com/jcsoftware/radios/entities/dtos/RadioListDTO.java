@@ -5,10 +5,11 @@ import java.util.List;
 
 import com.jcsoftware.radios.entities.RadioList;
 
-public record RadioListDTO(String name,UserDTO owner,Instant createdAt,Instant updatedAt,List<ListItemDTO> items) {
+public record RadioListDTO(Long id,String name,UserDTO owner,Instant createdAt,Instant updatedAt,List<ListItemDTO> items) {
 	
 	public RadioListDTO(RadioList entity) {
 		this(
+		entity.getId(),
 		entity.getName(),
 		new UserDTO(entity.getOwner()),
 		entity.getCreatedAt(),

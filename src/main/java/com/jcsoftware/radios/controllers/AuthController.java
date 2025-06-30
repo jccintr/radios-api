@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jcsoftware.radios.entities.User;
 import com.jcsoftware.radios.entities.dtos.UserDTO;
 import com.jcsoftware.radios.services.UserService;
 
@@ -18,8 +19,8 @@ public class AuthController {
 	
 	@GetMapping(value="/me")
 	public ResponseEntity<UserDTO> findById(){
-		UserDTO userDTO = userService.me();
-		return ResponseEntity.ok().body(userDTO);
+		User user = userService.me();
+		return ResponseEntity.ok().body(new UserDTO(user));
 	}
 
 }

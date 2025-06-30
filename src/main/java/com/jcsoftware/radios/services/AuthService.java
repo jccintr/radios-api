@@ -8,5 +8,20 @@ public class AuthService {
 	
 	@Autowired
 	UserService userService;
+	
+	/*
+public void validateSelfOrAdmin(Long userId,Long resource) {
+		
+		User me = userService.authenticated();
+		
+		if(me.hasRole("ROLE_ADMIN")) {
+			return;
+		}
+		if(!me.getId().equals(userId)) {
+			throw new ForbiddenException(resource);
+		}
+		
+	}
+*/
 
 }

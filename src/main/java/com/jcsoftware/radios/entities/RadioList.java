@@ -71,7 +71,7 @@ public class RadioList {
 		return owner;
 	}
 
-	public void setowner(User owner) {
+	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 	
