@@ -1,6 +1,6 @@
 INSERT INTO users (name, email, password) VALUES ('Alex', 'alex@gmail.com', '$2a$10$e1zv4PUeNpbrbRYpJmk0euJnt5xNI0PGcYMxrSX8t6kJrAmOZSS/S');
 INSERT INTO users (name, email, password) VALUES ('Maria',  'maria@gmail.com', '$2a$10$e1zv4PUeNpbrbRYpJmk0euJnt5xNI0PGcYMxrSX8t6kJrAmOZSS/S');
-INSERT INTO users (name, email, password) VALUES ('Julio Cesar',  'jccintr@gmail.com', '$2a$10$e1zv4PUeNpbrbRYpJmk0euJnt5xNI0PGcYMxrSX8t6kJrAmOZSS/S');
+INSERT INTO users (name, email, password) VALUES ('Julio Cesar',  'jc@gmail.com', '$2a$10$e1zv4PUeNpbrbRYpJmk0euJnt5xNI0PGcYMxrSX8t6kJrAmOZSS/S');
 
 INSERT INTO roles (authority) VALUES ('ROLE_ADMIN');
 INSERT INTO roles (authority) VALUES ('ROLE_COMMON');

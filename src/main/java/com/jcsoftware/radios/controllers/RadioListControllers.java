@@ -31,7 +31,14 @@ public class RadioListControllers {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
-	 @PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
+	@GetMapping(value="/owner")
+	public ResponseEntity<List<RadioListDTO>> findAllByOwner(){
+		List<RadioListDTO> lists = service.findAllByOwner();
+		return ResponseEntity.ok().body(lists);
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
 	@PostMapping()
 	public ResponseEntity<RadioListDTO> insert(@RequestBody NewRadioListDTO dto){
 		 RadioListDTO radioListDTO = service.insert(dto);
@@ -50,4 +57,3 @@ public class RadioListControllers {
 
 }
 
-// @PreAuthorize("hasAnyRole('ROLE_CLIENT','ROLE_ADMIN')")
