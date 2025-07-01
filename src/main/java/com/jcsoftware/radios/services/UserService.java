@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jcsoftware.radios.entities.User;
-import com.jcsoftware.radios.entities.dtos.UserDTO;
 import com.jcsoftware.radios.repositories.UserRepository;
 
 @Service
@@ -49,8 +48,8 @@ public class UserService implements UserDetailsService {
 	@Transactional(readOnly=true)
 	public User me() {
 
-		User user = auth();
-		return user;
+		return auth();
+		
 		
 	}
 	

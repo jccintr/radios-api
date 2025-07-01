@@ -19,12 +19,17 @@ public class RadioListService {
 	private RadioListRepository repository;
 	@Autowired 
 	private UserService userService;
+	@Autowired
+	private AuthService authService;
 
+	
 	public RadioListDTO findById(Long id) {
 		Optional<RadioList> radioListO = repository.findById(id);
 		RadioList radioList = radioListO.orElseThrow(() -> new ResourceNotFoundException());
+		authService.isAdminOrOwner(radioList.getOwner().getId(),radioList.getId());
 		return new RadioListDTO(radioList);
 	}
+	
 
 	public RadioListDTO insert(NewRadioListDTO dto) {
 		RadioList newRadioList = new RadioList();

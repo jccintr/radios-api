@@ -25,6 +25,7 @@ public class RadioListControllers {
 	@Autowired
 	private RadioListService service;
 	
+	@PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
 	@GetMapping(value="/{id}")
 	public ResponseEntity<RadioListDTO> findById(@PathVariable Long id){
 		RadioListDTO listDTO = service.findById(id);
