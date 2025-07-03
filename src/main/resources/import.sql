@@ -47,7 +47,6 @@ INSERT INTO radio_category(radio_id,category_id) VALUES (3,2);
 INSERT INTO radio_category(radio_id,category_id) VALUES (4,4);
 INSERT INTO radio_category(radio_id,category_id) VALUES (5,4);
 INSERT INTO radio_category(radio_id,category_id) VALUES (5,10);
-INSERT INTO radio_category(radio_id,category_id) VALUES (5,4);
 INSERT INTO radio_category(radio_id,category_id) VALUES (6,1);
 INSERT INTO radio_category(radio_id,category_id) VALUES (6,9);
 INSERT INTO radio_category(radio_id,category_id) VALUES (6,11);

@@ -52,7 +52,7 @@ public class RadioService {
 		if (repository.existsById(id)) {
 			repository.deleteById(id);
 		} else {
-			throw (new ResourceNotFoundException());
+			throw (new ResourceNotFoundException("Radio not found id: "+ id));
 		}
 		
 	}
@@ -66,7 +66,7 @@ public class RadioService {
 			radio = repository.save(radio);
 			return new RadioDTO(radio);
 		} catch (EntityNotFoundException e) {
-			throw (new ResourceNotFoundException());
+			throw (new ResourceNotFoundException("Radio not found id: "+ id));
 		}
 		
 	}
@@ -133,7 +133,7 @@ public class RadioService {
 
 	public RadioDTO findById(Long id) {
 		Optional<Radio> radioO = repository.findById(id);
-		Radio radio = radioO.orElseThrow(() -> new ResourceNotFoundException());
+		Radio radio = radioO.orElseThrow(() -> new ResourceNotFoundException("Radio not found id: "+ id));
 		
 		return new RadioDTO(radio);
 	}

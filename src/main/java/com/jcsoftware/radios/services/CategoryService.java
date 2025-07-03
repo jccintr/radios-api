@@ -41,7 +41,7 @@ public class CategoryService {
 		if (repository.existsById(id)) {
 			repository.deleteById(id);
 		} else {
-			throw (new ResourceNotFoundException());
+			throw (new ResourceNotFoundException("Category not found id: " + id));
 		}
 		
 	}
@@ -55,7 +55,7 @@ public class CategoryService {
 			category = repository.save(category);
 			return new CategoryDTO(category);
 		} catch (EntityNotFoundException e) {
-			throw (new ResourceNotFoundException());
+			throw (new ResourceNotFoundException("Category not found id: " + id));
 		}
 		
 	}
@@ -69,7 +69,7 @@ public class CategoryService {
 
 	public CategoryDTO findById(Long id) {
 		Optional<Category> categoryO = repository.findById(id);
-		Category category = categoryO.orElseThrow(() -> new ResourceNotFoundException());
+		Category category = categoryO.orElseThrow(() -> new ResourceNotFoundException("Category not found id: " + id));
 		
 		return new CategoryDTO(category);
 	}

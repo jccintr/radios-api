@@ -23,6 +23,15 @@ public class AuthService {
 		
 	}
 	
+	public void isOwner(Long userId,Long resource) {
+		
+		User me = userService.auth();
+		
+		if(!me.getId().equals(userId))	throw new ForbiddenException(resource);
+		
+		return;
+	}
+	
 	/*
 public void validateSelfOrAdmin(Long userId,Long resource) {
 		

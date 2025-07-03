@@ -2,10 +2,10 @@ package com.jcsoftware.radios.entities.dtos;
 
 import com.jcsoftware.radios.entities.ListItem;
 
-public record ListItemDTO(RadioDTO radio) {
+public record ListItemDTO(Long id,RadioDTO radio) {
 	
 	public ListItemDTO(ListItem entity) {
-		this(new RadioDTO(entity.getRadio()));
+		this(entity.getId(),new RadioDTO(entity.getRadio()));
 	}
 
 }

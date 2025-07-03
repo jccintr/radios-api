@@ -42,7 +42,7 @@ public class CityService {
 		if (repository.existsById(id)) {
 			repository.deleteById(id);
 		} else {
-			throw (new ResourceNotFoundException());
+			throw (new ResourceNotFoundException("City not found id: "+id));
 		}
 		
 	}
@@ -56,7 +56,7 @@ public class CityService {
 			city = repository.save(city);
 			return new CityDTO(city);
 		} catch (EntityNotFoundException e) {
-			throw (new ResourceNotFoundException());
+			throw (new ResourceNotFoundException("City not found id: "+id));
 		}
 		
 	}
@@ -71,7 +71,7 @@ public class CityService {
 
 	public CityDTO findById(Long id) {
 		Optional<City> cityO = repository.findById(id);
-		City city = cityO.orElseThrow(() -> new ResourceNotFoundException());
+		City city = cityO.orElseThrow(() -> new ResourceNotFoundException("City not found id: "+id));
 		
 		return new CityDTO(city);
 	}

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,8 +32,8 @@ public class RadioList {
 	@JoinColumn(name="user_id")
 	private User owner;
 	
-	@OneToMany(mappedBy = "list")
-	private Set<ListItem> items = new HashSet<>();
+	@OneToMany(mappedBy = "list", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<ListItem> radios = new HashSet<>();
 
 	@Column(columnDefinition="TIMESTAMP WITHOUT TIME ZONE")
 	private Instant createdAt;
@@ -77,12 +78,12 @@ public class RadioList {
 	
 	
 
-	public Set<ListItem> getItems() {
-		return items;
+	public Set<ListItem> getRadios() {
+		return radios;
 	}
 
-	public void setItems(Set<ListItem> items) {
-		this.items = items;
+	public void setItems(Set<ListItem> radios) {
+		this.radios = radios;
 	}
 	
 	
@@ -120,5 +121,12 @@ public class RadioList {
 	@PreUpdate
 	public void preUpdate() {
 		this.updatedAt = Instant.now();
+	}
+	
+	public boolean containsRadio(Radio radio) {
+	    if (radio == null) {
+	        return false;
+	    }
+	    return radios.stream().anyMatch(item -> radio.equals(item.getRadio()));
 	}
 }
