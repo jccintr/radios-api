@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.NewRadioListDTO;
 import com.jcsoftware.radios.entities.dtos.RadioListDTO;
 import com.jcsoftware.radios.services.RadioListService;
@@ -64,6 +66,15 @@ public class RadioListControllers {
 		service.delete(id);
 		
 		return ResponseEntity.noContent().build();
+	}
+	 
+	@PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
+	@PutMapping(value="/{id}")
+	public ResponseEntity<RadioListDTO> update(@PathVariable Long id, @RequestBody NewRadioListDTO dto){
+			
+		RadioListDTO  radioList = service.update(id, dto);
+		return ResponseEntity.ok().body(radioList);
+			
 	}
 
 }
