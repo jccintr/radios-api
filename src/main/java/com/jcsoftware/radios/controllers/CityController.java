@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.CityDTO;
 import com.jcsoftware.radios.entities.dtos.NewCityDTO;
 import com.jcsoftware.radios.services.CityService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/cities")
@@ -30,7 +31,7 @@ public class CityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping()
-	public ResponseEntity<CityDTO> insert(@RequestBody NewCityDTO dto){
+	public ResponseEntity<CityDTO> insert(@RequestBody @Valid NewCityDTO dto){
 		CityDTO cityDTO = service.insert(dto);
 	        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(cityDTO.id()).toUri();
@@ -52,7 +53,7 @@ public class CityController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value="/{id}")
-	public ResponseEntity<CityDTO> update(@PathVariable Long id, @RequestBody CityDTO dto){
+	public ResponseEntity<CityDTO> update(@PathVariable Long id, @RequestBody @Valid CityDTO dto){
 		
 		CityDTO  city = service.update(id, dto);
 		return ResponseEntity.ok().body(city);

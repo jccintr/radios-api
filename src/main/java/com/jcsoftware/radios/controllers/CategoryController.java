@@ -20,6 +20,8 @@ import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.NewCategoryDTO;
 import com.jcsoftware.radios.services.CategoryService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryController {
@@ -29,7 +31,7 @@ public class CategoryController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping()
-	public ResponseEntity<CategoryDTO> insert(@RequestBody NewCategoryDTO dto){
+	public ResponseEntity<CategoryDTO> insert(@RequestBody @Valid NewCategoryDTO dto){
 		CategoryDTO categoryDTO = service.insert(dto);
 	        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(categoryDTO.id()).toUri();
@@ -51,7 +53,7 @@ public class CategoryController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value="/{id}")
-	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto){
+	public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody @Valid CategoryDTO dto){
 		
 		CategoryDTO  category = service.update(id, dto);
 		return ResponseEntity.ok().body(category);

@@ -1,6 +1,10 @@
 package com.jcsoftware.radios.services;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +19,11 @@ import com.jcsoftware.radios.entities.Role;
 import com.jcsoftware.radios.entities.User;
 import com.jcsoftware.radios.entities.dtos.RegisterDTO;
 import com.jcsoftware.radios.entities.dtos.UserDTO;
+import com.jcsoftware.radios.entities.dtos.UserWithRolesDTO;
 import com.jcsoftware.radios.repositories.RoleRepository;
 import com.jcsoftware.radios.repositories.UserRepository;
 import com.jcsoftware.radios.services.exceptions.DuplicatedEmailException;
+import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -30,6 +36,7 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -84,6 +91,18 @@ public class UserService implements UserDetailsService {
 		
 		return new UserDTO(newUser);
 		
+	}
+	
+	public List<UserWithRolesDTO> findAll() {
+		List<User> users = repository.findAll(Sort.by("name"));
+		return users.stream().map(UserWithRolesDTO::new).toList();
+	}
+	
+	public UserWithRolesDTO findById(Long id) {
+		Optional<User> userO = repository.findById(id);
+		User user = userO.orElseThrow(() -> new ResourceNotFoundException("User not found id: "+ id));
+		
+		return new UserWithRolesDTO(user);
 	}
 	
 	

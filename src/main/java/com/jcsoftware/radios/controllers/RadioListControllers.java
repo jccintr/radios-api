@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.NewRadioListDTO;
 import com.jcsoftware.radios.entities.dtos.RadioListDTO;
 import com.jcsoftware.radios.services.RadioListService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/lists")
@@ -44,7 +45,7 @@ public class RadioListControllers {
 	
 	@PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
 	@PostMapping()
-	public ResponseEntity<RadioListDTO> insert(@RequestBody NewRadioListDTO dto){
+	public ResponseEntity<RadioListDTO> insert(@RequestBody @Valid NewRadioListDTO dto){
 		 RadioListDTO radioListDTO = service.insert(dto);
 	        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(radioListDTO.id()).toUri();
@@ -70,7 +71,7 @@ public class RadioListControllers {
 	 
 	@PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
 	@PutMapping(value="/{id}")
-	public ResponseEntity<RadioListDTO> update(@PathVariable Long id, @RequestBody NewRadioListDTO dto){
+	public ResponseEntity<RadioListDTO> update(@PathVariable Long id, @RequestBody @Valid NewRadioListDTO dto){
 			
 		RadioListDTO  radioList = service.update(id, dto);
 		return ResponseEntity.ok().body(radioList);

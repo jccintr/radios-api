@@ -21,6 +21,8 @@ import com.jcsoftware.radios.entities.dtos.RadioDTO;
 import com.jcsoftware.radios.entities.dtos.UpdateRadioDTO;
 import com.jcsoftware.radios.services.RadioService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/radios")
 public class RadioController {
@@ -30,7 +32,7 @@ public class RadioController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping()
-	public ResponseEntity<RadioDTO> insert(@RequestBody NewRadioDTO dto){
+	public ResponseEntity<RadioDTO> insert(@RequestBody @Valid NewRadioDTO dto){
 		RadioDTO radioDTO = service.insert(dto);
 	        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(radioDTO.id()).toUri();
@@ -52,7 +54,7 @@ public class RadioController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping(value="/{id}")
-	public ResponseEntity<RadioDTO> update(@PathVariable Long id, @RequestBody UpdateRadioDTO dto){
+	public ResponseEntity<RadioDTO> update(@PathVariable Long id, @RequestBody @Valid UpdateRadioDTO dto){
 		
 		RadioDTO  radio = service.update(id, dto);
 		return ResponseEntity.ok().body(radio);

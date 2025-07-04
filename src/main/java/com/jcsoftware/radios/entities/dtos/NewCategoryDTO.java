@@ -1,5 +1,12 @@
 package com.jcsoftware.radios.entities.dtos;
 
-public record NewCategoryDTO(String name) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public record NewCategoryDTO(
+		@NotBlank(message = "Campo requerido")
+		@Size(min = 3, message = "O campo deve ter pelo menos 3 caracteres")
+		String name
+		) {
 
 }

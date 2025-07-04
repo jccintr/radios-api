@@ -70,27 +70,7 @@ public class RadioService {
 		}
 		
 	}
-	/*
-	private void copyDtoToEntity(RadioDTO dto, Radio entity) {
-
-		entity.setName(dto.name());
-		entity.setShortName(dto.shortName());
-		entity.setImageUrl(dto.imageUrl());
-        entity.setStreamUrl(dto.streamUrl());
-        entity.setHsl(dto.hsl());
-        entity.setWebRadio(dto.webRadio());
-        City city = cityRepository.getReferenceById(dto.city().id());
-        entity.setCity(city);
-        entity.getCategories().clear();
-		for(CategoryDTO catDTO: dto.categories()) {
-			Category cat = categoryRepository.getReferenceById(catDTO.id());
-			cat.setId(catDTO.id());
-			entity.getCategories().add(cat);
-		}
-       
-		
-	}
-	*/
+	
 	private void copyDtoToEntity(NewRadioDTO dto, Radio entity) {
 
 		entity.setName(dto.name());

@@ -16,6 +16,8 @@ import com.jcsoftware.radios.entities.dtos.RegisterDTO;
 import com.jcsoftware.radios.entities.dtos.UserDTO;
 import com.jcsoftware.radios.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/auth")
 public class AuthController {
@@ -30,7 +32,7 @@ public class AuthController {
 	}
 	
 	@PostMapping(value="/register")
-	public ResponseEntity<UserDTO> insert(@RequestBody RegisterDTO dto){
+	public ResponseEntity<UserDTO> insert(@RequestBody @Valid RegisterDTO dto){
 		UserDTO newUserDTO = userService.insert(dto);
 	        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(newUserDTO.id()).toUri();

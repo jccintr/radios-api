@@ -17,6 +17,8 @@ import com.jcsoftware.radios.entities.dtos.ListItemDTO;
 import com.jcsoftware.radios.entities.dtos.NewListItemDTO;
 import com.jcsoftware.radios.services.ListItemService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/items")
 public class ListItemController {
@@ -26,7 +28,7 @@ public class ListItemController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
 	@PostMapping()
-	public ResponseEntity<ListItemDTO> insert(@RequestBody NewListItemDTO dto){
+	public ResponseEntity<ListItemDTO> insert(@RequestBody @Valid NewListItemDTO dto){
 		ListItemDTO newListItem = service.insert(dto);
 	        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 					.buildAndExpand(newListItem.id()).toUri();
