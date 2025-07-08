@@ -13,6 +13,7 @@ import com.jcsoftware.radios.controllers.exceptions.StandardError;
 import com.jcsoftware.radios.controllers.exceptions.ValidationError;
 import com.jcsoftware.radios.services.exceptions.DuplicatedEmailException;
 import com.jcsoftware.radios.services.exceptions.ForbiddenException;
+import com.jcsoftware.radios.services.exceptions.InvalidCredentialsException;
 import com.jcsoftware.radios.services.exceptions.RadioAlreadyInListException;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
 
@@ -72,6 +73,16 @@ public class ControllerExceptionHandler {
 			err.AddError(f.getField(), f.getDefaultMessage());
 		}
 		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<StandardError> invalidCredentials(InvalidCredentialsException e,HttpServletRequest request){
+		
+		String error = "Bad Request";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(),status.value(),error,e.getMessage(),request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+		
 	}
 	
 	

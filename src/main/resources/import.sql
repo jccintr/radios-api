@@ -19,7 +19,7 @@ INSERT INTO categories(name) VALUES ('Católica');
 INSERT INTO categories(name) VALUES ('Carnaval');
 INSERT INTO categories(name) VALUES ('Samba e Pagode');
 INSERT INTO categories(name) VALUES ('MPB');
-INSERT INTO categories(name) VALUES ('RAPP');
+INSERT INTO categories(name) VALUES ('RAP');
 INSERT INTO categories(name) VALUES ('Dance');
 
 INSERT INTO cities(name,state) VALUES ('São Paulo','SP');
