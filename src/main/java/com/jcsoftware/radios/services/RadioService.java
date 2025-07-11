@@ -78,7 +78,6 @@ public class RadioService {
 		entity.setImageUrl(dto.imageUrl());
         entity.setStreamUrl(dto.streamUrl());
         entity.setHsl(dto.hsl());
-        entity.setWebRadio(dto.webRadio());
         City city = cityRepository.getReferenceById(dto.cityId());
         entity.setCity(city);
         entity.getCategories().clear();
@@ -98,7 +97,6 @@ public class RadioService {
 		entity.setImageUrl(dto.imageUrl());
         entity.setStreamUrl(dto.streamUrl());
         entity.setHsl(dto.hsl());
-        entity.setWebRadio(dto.webRadio());
         City city = cityRepository.getReferenceById(dto.cityId());
         entity.setCity(city);
         entity.getCategories().clear();

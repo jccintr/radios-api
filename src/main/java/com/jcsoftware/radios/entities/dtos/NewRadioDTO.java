@@ -27,8 +27,6 @@ public record NewRadioDTO(
 		@NotNull(message = "Campo requerido")
 		Boolean hsl,
 		@NotNull(message = "Campo requerido")
-		Boolean webRadio,
-		@NotNull(message = "Campo requerido")
 		@Min(value = 1, message = "ID inválido")
 		Long cityId,
 		@NotEmpty(message = "Deve ser informado pelo menos uma categoria.")
@@ -40,9 +38,8 @@ public record NewRadioDTO(
 	        String streamUrl,
 	        String imageUrl,
 	        Boolean hsl,
-	        Boolean webRadio,
 	        Long cityId
 	    ) {
-	        this(name, shortName, streamUrl, imageUrl, hsl, webRadio, cityId, new ArrayList<>());
+	        this(name, shortName, streamUrl, imageUrl, hsl, cityId, new ArrayList<>());
 	    }
 }

@@ -9,34 +9,46 @@ INSERT INTO user_role (user_id, role_id) VALUES (1, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (3, 1);
 
+INSERT INTO categories(name) VALUES ('Sugeridas');
+INSERT INTO categories(name) VALUES ('Top 10');  
 INSERT INTO categories(name) VALUES ('Esportes'); 
 INSERT INTO categories(name) VALUES ('Notícias');
+INSERT INTO categories(name) VALUES ('Hits'); 
 INSERT INTO categories(name) VALUES ('Rock');
 INSERT INTO categories(name) VALUES ('Pop');
+INSERT INTO categories(name) VALUES ('MPB'); 
+INSERT INTO categories(name) VALUES ('Dance');
+INSERT INTO categories(name) VALUES ('Rap');  
+INSERT INTO categories(name) VALUES ('Samba e Pagode');
 INSERT INTO categories(name) VALUES ('Sertanejo');
 INSERT INTO categories(name) VALUES ('Gospel');
 INSERT INTO categories(name) VALUES ('Católica');
 INSERT INTO categories(name) VALUES ('Carnaval');
-INSERT INTO categories(name) VALUES ('Samba e Pagode');
-INSERT INTO categories(name) VALUES ('MPB');
-INSERT INTO categories(name) VALUES ('RAP');
-INSERT INTO categories(name) VALUES ('Dance');
+INSERT INTO categories(name) VALUES ('Flashback');
+INSERT INTO categories(name) VALUES ('Nostalgia');
+INSERT INTO categories(name) VALUES ('Anos 90');
+INSERT INTO categories(name) VALUES ('Anos 80');
+INSERT INTO categories(name) VALUES ('Web Radio');
+
 
 INSERT INTO cities(name,state) VALUES ('São Paulo','SP');
 INSERT INTO cities(name,state) VALUES ('Campos do Jordão','SP');
 INSERT INTO cities(name,state) VALUES ('Rio de Janeiro','RJ');
 INSERT INTO cities(name,state) VALUES ('Santa Rita do Sapucaí','MG');
+INSERT INTO cities(name,state) VALUES ('Belo Horizonte','MG')
+INSERT INTO cities(name,state) VALUES ('São José dos Campos','SP')
+INSERT INTO cities(name,state) VALUES ('Itajubá','MG')
 
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('Rádio Transamérica SP','Transamérica',1,'http://stream.com','http://image.com',false,false);
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('Rádio Arquibancada','Rádio Arquibancada',3,'http://stream.com','http://image.com',false,false);
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('Rádio Bandeirantes SP','Rádio Bandeirantes',1,'http://stream.com','http://image.com',false,false);
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('Metropolitana FM SP','Metropolitana',1,'http://stream.com','http://image.com',false,false);
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('Band Vale FM','Band Vale',2,'http://stream.com','http://image.com',false,false);
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('Rádio 105 FM','105 FM',1,'http://stream.com','http://image.com',false,false);
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('Mix FM SP','Mix FM',1,'http://stream.com','http://image.com',false,false);
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('D2 FM','D2 FM',4,'http://stream.com','http://image.com',false,false);
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('Rádio Nova Brasil','Nova Brasil',1,'http://stream.com','http://image.com',false,false);
-INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl,web_radio) VALUES ('Energia 97 FM','Energia 97',1,'http://stream.com','http://image.com',false,false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('Rádio Transamérica SP','Transamérica',1,'http://stream.com','http://image.com',false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('Rádio Arquibancada','Rádio Arquibancada',3,'http://stream.com','http://image.com',false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('Rádio Bandeirantes SP','Rádio Bandeirantes',1,'http://stream.com','http://image.com',false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('Metropolitana FM SP','Metropolitana',1,'http://stream.com','http://image.com',false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('Band Vale FM','Band Vale',2,'http://stream.com','http://image.com',false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('Rádio 105 FM','105 FM',1,'http://stream.com','http://image.com',false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('Mix FM SP','Mix FM',1,'http://stream.com','http://image.com',false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('D2 FM','D2 FM',4,'http://stream.com','http://image.com',false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('Rádio Nova Brasil','Nova Brasil',1,'http://stream.com','http://image.com',false);
+INSERT INTO radios (name,short_name,city_id,stream_url,image_url,hsl) VALUES ('Energia 97 FM','Energia 97',1,'http://stream.com','http://image.com',false);
 
 INSERT INTO radio_category(radio_id,category_id) VALUES (1,1);
 INSERT INTO radio_category(radio_id,category_id) VALUES (1,3);

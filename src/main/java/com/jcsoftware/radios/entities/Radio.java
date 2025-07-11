@@ -29,7 +29,7 @@ public class Radio {
 	private String streamUrl;
 	private String imageUrl;
 	private Boolean hsl;
-	private Boolean webRadio;
+	
 	@ManyToOne
 	@JoinColumn(name = "city_id")
 	private City city;
@@ -44,8 +44,7 @@ public class Radio {
 
 	
 
-	public Radio(Long id, String name, String shortName, String streamUrl, String imageUrl, Boolean hsl,
-			Boolean webRadio, City city) {
+	public Radio(Long id, String name, String shortName, String streamUrl, String imageUrl, Boolean hsl,City city) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -53,7 +52,6 @@ public class Radio {
 		this.streamUrl = streamUrl;
 		this.imageUrl = imageUrl;
 		this.hsl = hsl;
-		this.webRadio = webRadio;
 		this.city = city;
 	}
 
@@ -107,14 +105,6 @@ public class Radio {
 		this.hsl = hsl;
 	}
 
-	public Boolean getWebRadio() {
-		return webRadio;
-	}
-
-	public void setWebRadio(Boolean webRadio) {
-		this.webRadio = webRadio;
-	}
-	
 	
 	public City getCity() {
 		return city;
