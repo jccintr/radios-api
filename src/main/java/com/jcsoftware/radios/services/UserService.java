@@ -19,11 +19,15 @@ import com.jcsoftware.radios.entities.Role;
 import com.jcsoftware.radios.entities.User;
 import com.jcsoftware.radios.entities.dtos.RegisterDTO;
 import com.jcsoftware.radios.entities.dtos.UserDTO;
+import com.jcsoftware.radios.entities.dtos.UserUpdateDTO;
 import com.jcsoftware.radios.entities.dtos.UserWithRolesDTO;
 import com.jcsoftware.radios.repositories.RoleRepository;
 import com.jcsoftware.radios.repositories.UserRepository;
 import com.jcsoftware.radios.services.exceptions.DuplicatedEmailException;
+import com.jcsoftware.radios.services.exceptions.ForbiddenException;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
+
+import jakarta.validation.Valid;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -36,6 +40,7 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
 	
 
 	@Override
@@ -103,6 +108,20 @@ public class UserService implements UserDetailsService {
 		User user = userO.orElseThrow(() -> new ResourceNotFoundException("User not found id: "+ id));
 		
 		return new UserWithRolesDTO(user);
+	}
+
+	public UserDTO update(Long id, @Valid UserUpdateDTO dto) {
+		
+		Optional<User> userO = repository.findById(id);
+		User user = userO.orElseThrow(() -> new ResourceNotFoundException("User not found id: " + id));
+		User me = this.me();
+		if(!me.hasRole("ROLE_ADMIN") && me.getId()!= id) throw new ForbiddenException(id);
+		// só pode alterar se for admin 
+		// se não for admin, só altera se o id do user logado for igual ao id do user encontrado
+		user.setName(dto.name());
+		user = repository.save(user);
+		return new UserDTO(user);
+		
 	}
 	
 	

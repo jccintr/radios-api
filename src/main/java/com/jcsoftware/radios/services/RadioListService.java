@@ -7,16 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jcsoftware.radios.entities.Category;
 import com.jcsoftware.radios.entities.RadioList;
-import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.NewRadioListDTO;
 import com.jcsoftware.radios.entities.dtos.RadioListDTO;
-import com.jcsoftware.radios.repositories.ListItemRepository;
 import com.jcsoftware.radios.repositories.RadioListRepository;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class RadioListService {
