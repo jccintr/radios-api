@@ -1,13 +1,14 @@
+
+INSERT INTO users (name, email, password) VALUES ('Julio Cesar',  'jc@gmail.com', '$2a$10$8V3FA/a8QZBu9AK2LzTzlelF3s3Py1P9IIxalmq15p/jcVcZx4lIe');
 INSERT INTO users (name, email, password) VALUES ('Alex', 'alex@gmail.com', '$2a$10$e1zv4PUeNpbrbRYpJmk0euJnt5xNI0PGcYMxrSX8t6kJrAmOZSS/S');
 INSERT INTO users (name, email, password) VALUES ('Maria',  'maria@gmail.com', '$2a$10$e1zv4PUeNpbrbRYpJmk0euJnt5xNI0PGcYMxrSX8t6kJrAmOZSS/S');
-INSERT INTO users (name, email, password) VALUES ('Julio Cesar',  'jc@gmail.com', '$2a$10$e1zv4PUeNpbrbRYpJmk0euJnt5xNI0PGcYMxrSX8t6kJrAmOZSS/S');
 
 INSERT INTO roles (authority) VALUES ('ROLE_ADMIN');
 INSERT INTO roles (authority) VALUES ('ROLE_COMMON');
 
-INSERT INTO user_role (user_id, role_id) VALUES (1, 2);
+INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 2);
-INSERT INTO user_role (user_id, role_id) VALUES (3, 1);
+INSERT INTO user_role (user_id, role_id) VALUES (3, 2);
 
 INSERT INTO categories(name) VALUES ('Sugeridas');
 INSERT INTO categories(name) VALUES ('Top 10');  
@@ -69,10 +70,10 @@ INSERT INTO radio_category(radio_id,category_id) VALUES (9,10);
 INSERT INTO radio_category(radio_id,category_id) VALUES (10,1);
 INSERT INTO radio_category(radio_id,category_id) VALUES (10,12);
 
-INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC',3,Now(),Now());
-INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do Alex',1,Now(),Now());
-INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista da Maria',2,Now(),Now());
-INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Futebol',3,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC',1,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do Alex',2,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista da Maria',3,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Futebol',1,Now(),Now());
 
 INSERT INTO list_items(list_id,radio_id) VALUES (1,1);
 INSERT INTO list_items(list_id,radio_id) VALUES (1,2);

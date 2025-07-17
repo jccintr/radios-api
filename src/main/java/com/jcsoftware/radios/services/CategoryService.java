@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +37,17 @@ public class CategoryService {
 	public List<CategoryDTO> findAll() {
 		List<Category> categories = repository.findAll(Sort.by("name"));
 		return categories.stream().map(CategoryDTO::new).toList();
+	}
+	
+	public Page<CategoryDTO> findAllPaged(Pageable pageable) {
+		//http://localhost:8080/categories?page=0
+		Pageable customPageable = PageRequest.of(
+	            pageable.getPageNumber(),
+	            10,                     
+	            Sort.by("name").ascending() 
+	        );
+		Page<Category> categories = repository.findAll(customPageable);
+		return categories.map(CategoryDTO::new);
 	}
 
 	@Transactional

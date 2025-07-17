@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,9 +41,17 @@ public class CategoryController {
 			return ResponseEntity.created(uri).body(categoryDTO);
 	}
 	
-	@GetMapping
+	
+	@GetMapping(value="/all")
 	public ResponseEntity<List<CategoryDTO>> findAll(){
 		List<CategoryDTO> categories = service.findAll();
+        return ResponseEntity.ok().body(categories);
+	}
+	
+	
+	@GetMapping
+	public ResponseEntity<Page<CategoryDTO>> findAllPaged(Pageable pageable){
+		Page<CategoryDTO> categories = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(categories);
 	}
 	
