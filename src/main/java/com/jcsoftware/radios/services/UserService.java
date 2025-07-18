@@ -123,6 +123,12 @@ public class UserService implements UserDetailsService {
 		return new UserDTO(user);
 		
 	}
+
+	public void delete(Long id) {
+		User user = repository.findById(id)
+    	        .orElseThrow(() -> new ResourceNotFoundException("User not found id: " + id));
+		repository.delete(user);
+	}
 	
 	
 

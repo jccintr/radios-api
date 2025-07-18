@@ -1,5 +1,5 @@
 
-INSERT INTO users (name, email, password) VALUES ('Julio Cesar',  'jc@gmail.com', '$2a$10$8V3FA/a8QZBu9AK2LzTzlelF3s3Py1P9IIxalmq15p/jcVcZx4lIe');
+INSERT INTO users (name, email, password) VALUES ('Julio Cesar',  'jccintr@gmail.com', '$2a$10$8V3FA/a8QZBu9AK2LzTzlelF3s3Py1P9IIxalmq15p/jcVcZx4lIe');
 INSERT INTO users (name, email, password) VALUES ('Alex', 'alex@gmail.com', '$2a$10$e1zv4PUeNpbrbRYpJmk0euJnt5xNI0PGcYMxrSX8t6kJrAmOZSS/S');
 INSERT INTO users (name, email, password) VALUES ('Maria',  'maria@gmail.com', '$2a$10$e1zv4PUeNpbrbRYpJmk0euJnt5xNI0PGcYMxrSX8t6kJrAmOZSS/S');
 
@@ -78,3 +78,6 @@ INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Fut
 INSERT INTO list_items(list_id,radio_id) VALUES (1,1);
 INSERT INTO list_items(list_id,radio_id) VALUES (1,2);
 INSERT INTO list_items(list_id,radio_id) VALUES (1,3);
+INSERT INTO list_items(list_id,radio_id) VALUES (2,1);
+INSERT INTO list_items(list_id,radio_id) VALUES (3,2);
+INSERT INTO list_items(list_id,radio_id) VALUES (3,3);

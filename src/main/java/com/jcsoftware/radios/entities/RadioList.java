@@ -28,7 +28,7 @@ public class RadioList {
 	
 	private String name;
 	
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name="user_id")
 	private User owner;
 	
