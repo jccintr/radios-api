@@ -5,15 +5,16 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jcsoftware.radios.entities.City;
-import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.CityDTO;
 import com.jcsoftware.radios.entities.dtos.NewCityDTO;
 import com.jcsoftware.radios.repositories.CityRepository;
+import com.jcsoftware.radios.services.exceptions.DatabaseIntegrityViolationException;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -37,12 +38,19 @@ public class CityService {
 		return cities.stream().map(CityDTO::new).toList();
 	}
 
-	@Transactional
+	
 	public void delete(Long id) {
-		if (repository.existsById(id)) {
-			repository.deleteById(id);
-		} else {
-			throw (new ResourceNotFoundException("City not found id: "+id));
+		
+        try {	
+			
+			if (repository.existsById(id)) {
+				repository.deleteById(id);
+			} else {
+				throw (new ResourceNotFoundException("City not found id: "+id));
+			}
+			
+		} catch(DataIntegrityViolationException e) {
+		    throw (new DatabaseIntegrityViolationException(id));
 		}
 		
 	}

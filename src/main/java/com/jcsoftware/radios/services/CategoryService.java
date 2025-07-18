@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import com.jcsoftware.radios.entities.Category;
 import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.NewCategoryDTO;
 import com.jcsoftware.radios.repositories.CategoryRepository;
+import com.jcsoftware.radios.services.exceptions.DatabaseIntegrityViolationException;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -50,12 +52,18 @@ public class CategoryService {
 		return categories.map(CategoryDTO::new);
 	}
 
-	@Transactional
 	public void delete(Long id) {
-		if (repository.existsById(id)) {
-			repository.deleteById(id);
-		} else {
-			throw (new ResourceNotFoundException("Category not found id: " + id));
+		
+        try {	
+			
+			if (repository.existsById(id)) {
+				repository.deleteById(id);
+			} else {
+				throw (new ResourceNotFoundException("Category not found id: "+id));
+			}
+			
+		} catch(DataIntegrityViolationException e) {
+		    throw (new DatabaseIntegrityViolationException(id));
 		}
 		
 	}

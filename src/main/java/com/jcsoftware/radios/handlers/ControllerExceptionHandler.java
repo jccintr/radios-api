@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.jcsoftware.radios.controllers.exceptions.StandardError;
 import com.jcsoftware.radios.controllers.exceptions.ValidationError;
+import com.jcsoftware.radios.services.exceptions.DatabaseIntegrityViolationException;
 import com.jcsoftware.radios.services.exceptions.DuplicatedEmailException;
 import com.jcsoftware.radios.services.exceptions.ForbiddenException;
 import com.jcsoftware.radios.services.exceptions.InvalidCredentialsException;
@@ -83,6 +84,15 @@ public class ControllerExceptionHandler {
 		StandardError err = new StandardError(Instant.now(),status.value(),error,e.getMessage(),request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 		
+	}
+	@ExceptionHandler(DatabaseIntegrityViolationException.class)
+	public ResponseEntity<StandardError> DatabaseIntegrityViolation(DatabaseIntegrityViolationException e, HttpServletRequest request) {
+
+		String error = "Database Integrity Violation";
+		HttpStatus status = HttpStatus.CONFLICT;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
 	}
 	
 	

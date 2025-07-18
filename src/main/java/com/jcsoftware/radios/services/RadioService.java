@@ -3,6 +3,7 @@ package com.jcsoftware.radios.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import com.jcsoftware.radios.entities.dtos.UpdateRadioDTO;
 import com.jcsoftware.radios.repositories.CategoryRepository;
 import com.jcsoftware.radios.repositories.CityRepository;
 import com.jcsoftware.radios.repositories.RadioRepository;
+import com.jcsoftware.radios.services.exceptions.DatabaseIntegrityViolationException;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -46,13 +48,20 @@ public class RadioService {
 		List<Radio> radios = repository.findAll(Sort.by("name"));
 		return radios.stream().map(RadioDTO::new).toList();
 	}
+	
 
-	@Transactional
-	public void delete(Long id) {
-		if (repository.existsById(id)) {
-			repository.deleteById(id);
-		} else {
-			throw (new ResourceNotFoundException("Radio not found id: "+ id));
+    public void delete(Long id) {
+		
+        try {	
+			
+			if (repository.existsById(id)) {
+				repository.deleteById(id);
+			} else {
+				throw (new ResourceNotFoundException("Radio not found id: "+id));
+			}
+			
+		} catch(DataIntegrityViolationException e) {
+		    throw (new DatabaseIntegrityViolationException(id));
 		}
 		
 	}
