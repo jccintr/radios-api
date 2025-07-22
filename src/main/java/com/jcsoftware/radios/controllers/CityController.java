@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.CityDTO;
 import com.jcsoftware.radios.entities.dtos.NewCityDTO;
 import com.jcsoftware.radios.services.CityService;
@@ -39,9 +42,15 @@ public class CityController {
 			return ResponseEntity.created(uri).body(cityDTO);
 	}
 	
-	@GetMapping
+	@GetMapping(value="/all")
 	public ResponseEntity<List<CityDTO>> findAll(){
 		List<CityDTO> cities = service.findAll();
+        return ResponseEntity.ok().body(cities);
+	}
+	
+	@GetMapping
+	public ResponseEntity<Page<CityDTO>> findAllPaged(Pageable pageable){
+		Page<CityDTO> cities = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(cities);
 	}
 	

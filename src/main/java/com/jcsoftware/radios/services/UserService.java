@@ -1,9 +1,11 @@
 package com.jcsoftware.radios.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -98,9 +100,14 @@ public class UserService implements UserDetailsService {
 		
 	}
 	
-	public List<UserWithRolesDTO> findAll() {
-		List<User> users = repository.findAll(Sort.by("name"));
-		return users.stream().map(UserWithRolesDTO::new).toList();
+	public Page<UserWithRolesDTO> findAll(Pageable pageable) {
+		Pageable customPageable = PageRequest.of(
+	            pageable.getPageNumber(),
+	            10,                     
+	            Sort.by("name").ascending() 
+	        );
+		Page<User> users = repository.findAll(customPageable);
+		return users.map(UserWithRolesDTO::new);
 	}
 	
 	public UserWithRolesDTO findById(Long id) {

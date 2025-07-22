@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,9 +82,21 @@ public class CityService {
 
 	public CityDTO findById(Long id) {
 		Optional<City> cityO = repository.findById(id);
-		City city = cityO.orElseThrow(() -> new ResourceNotFoundException("City not found id: "+id));
+		City city = cityO.orElseThrow(() -> new ResourceNotFoundException("City not found id: " + id));
 		
 		return new CityDTO(city);
+	}
+
+	public Page<CityDTO> findAllPaged(Pageable pageable) {
+		
+		Pageable customPageable = PageRequest.of(
+	            pageable.getPageNumber(),
+	            10,                     
+	            Sort.by("name").ascending() 
+	        );
+		Page<City> cities = repository.findAll(customPageable);
+		return cities.map(CityDTO::new);
+		
 	}
 
 }
