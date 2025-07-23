@@ -11,8 +11,13 @@ public class Factory {
 		
 	}
 	
+   
 	public static CategoryDTO createCategoryDTO(Category entity) {
 		  return new CategoryDTO(entity);
 	}
+	
+	
+	
+	
 
 }

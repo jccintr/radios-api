@@ -26,71 +26,73 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.jcsoftware.radios.entities.Category;
-import com.jcsoftware.radios.entities.dtos.CategoryDTO;
-import com.jcsoftware.radios.entities.dtos.NewCategoryDTO;
-import com.jcsoftware.radios.repositories.CategoryRepository;
+import com.jcsoftware.radios.entities.City;
+import com.jcsoftware.radios.entities.dtos.CityDTO;
+import com.jcsoftware.radios.entities.dtos.NewCityDTO;
+import com.jcsoftware.radios.entities.enums.State;
+import com.jcsoftware.radios.repositories.CityRepository;
 import com.jcsoftware.radios.services.exceptions.DatabaseIntegrityViolationException;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
-import com.jcsoftware.radios.tests.Factory;
-
 
 @ExtendWith(SpringExtension.class)
-public class CategoryServiceTests {
+public class CityServiceTests {
 	
 	@InjectMocks
-	private CategoryService service;
-	private Category category;
-	private CategoryDTO categoryDTO;
-	private List<Category> categoryList;
-	private PageImpl<Category> categoryPage;
+	private CityService service;
+	private City city;
+	private CityDTO cityDTO;
+	private List<City> cityList;
+	private PageImpl<City> cityPage;
 	private Long existingId;
 	private Long nonExistingId;
 	private Long dependentId;
 	private Pageable pageable;
 	
 	@Mock
-	private CategoryRepository repository;
+	private CityRepository repository;
 	
 	@BeforeEach
 	void setup() throws Exception {
+		
 		existingId = 1L;
 		nonExistingId = 1000L;
 		dependentId = 10L;
 		pageable = PageRequest.of(0, 10, Sort.by("name").ascending());
-		category = Factory.createCategory();
-		categoryDTO = Factory.createCategoryDTO(category);
-		categoryPage = new PageImpl<>(List.of(category), pageable, 1);
-		categoryList = List.of(
-	            new Category(1L, "Esportes"),
-	            new Category(2L, "Rock")
+		city = new City(1L,"São Paulo",State.SP);
+		cityDTO = new CityDTO(city);
+		cityPage = new PageImpl<>(List.of(city), pageable, 1);
+		cityList = List.of(
+	            new City(1L, "Campos do Jordão",State.SP),
+	            new City(2L, "São Paulo",State.SP)
 	    );
 		
-		when(repository.findAll(any(Sort.class))).thenReturn(categoryList);
-		Mockito.when(repository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(categoryPage);
-		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(category));
+		when(repository.findAll(any(Sort.class))).thenReturn(cityList);
+		Mockito.when(repository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(cityPage);
+		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(city));
 		Mockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
-		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(category);
-		Mockito.when(repository.getReferenceById(existingId)).thenReturn(category);
+		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(city);
+		Mockito.when(repository.getReferenceById(existingId)).thenReturn(city);
 		Mockito.when(repository.getReferenceById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
 		Mockito.when(repository.existsById(existingId)).thenReturn(true);
 		Mockito.when(repository.existsById(nonExistingId)).thenReturn(false);
 		Mockito.when(repository.existsById(dependentId)).thenReturn(true);
 		Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
-	}
-	
-	@Test
-	public void insert_ShouldReturnCategoryDTO() {
-		NewCategoryDTO newCategoryDTO = new NewCategoryDTO("Esportes");
-		CategoryDTO result = service.insert(newCategoryDTO);
-		assertEquals(newCategoryDTO.name(), result.name());
-        verify(repository, times(1)).save(any(Category.class));
 		
 	}
 	
 	@Test
-	public void findById_ShouldReturnCategoryDTOWhenIdExists() {
-	    CategoryDTO result = service.findById(existingId);
+	public void insert_ShouldReturnCityDTO() {
+		NewCityDTO newCityDTO = new NewCityDTO("São Paulo",State.SP);
+		CityDTO result = service.insert(newCityDTO);
+		assertEquals(newCityDTO.name(), result.name());
+		assertEquals(newCityDTO.state(), result.state());
+        verify(repository, times(1)).save(any(City.class));
+		
+	}
+	
+	@Test
+	public void findById_ShouldReturnCityDTOWhenIdExists() {
+	    CityDTO result = service.findById(existingId);
 		Assertions.assertNotNull(result);
 	}
 	
@@ -127,42 +129,42 @@ public class CategoryServiceTests {
 	}
 	
 	@Test
-	public void update_ShouldReturnCategoryDTOWhenIdExists() {
-		CategoryDTO result = service.update(existingId, categoryDTO);
+	public void update_ShouldReturnCityDTOWhenIdExists() {
+		CityDTO result = service.update(existingId, cityDTO);
 		Assertions.assertNotNull(result);
 	}
 	
 	@Test
 	public void update_ShouldThrowResourceNotFoundExceptionOWhenIdDoesNotExists() {
 		Assertions.assertThrows(ResourceNotFoundException.class,()->{
-			service.update(nonExistingId, categoryDTO);
+			service.update(nonExistingId, cityDTO);
 		});
 	}
 	
 	@Test
     void findAllPaged_ShouldReturnPagedCategoryDTOs() {
        
-        Page<CategoryDTO> result = service.findAllPaged(pageable);
+        Page<CityDTO> result = service.findAllPaged(pageable);
        
         assertNotNull(result, "A página retornada não deve ser nula");
         assertEquals(1, result.getTotalElements(), "O total de elementos deve ser 1");
         assertEquals(1, result.getContent().size(), "A página deve conter 1 elemento");
-        assertEquals("Esportes", result.getContent().get(0).name(), "O nome da categoria deve ser 'Esportes'");
+        assertEquals("São Paulo", result.getContent().get(0).name(), "O nome da cidade deve ser 'São Paulo'");
+        assertEquals(State.SP, result.getContent().get(0).state(), "O estado deve ser 'SP");
         
     }
 	
 	@Test
     void findAll_ShouldReturnSortedCategoryDTOs() {
         
-        List<CategoryDTO> result = service.findAll();
+        List<CityDTO> result = service.findAll();
         
         assertNotNull(result, "A lista retornada não deve ser nula");
         assertEquals(2, result.size(), "A lista deve conter 2 elementos");
-        assertEquals("Esportes", result.get(0).name(), "A primeira categoria deve ser 'Esportes'");
-        assertEquals("Rock", result.get(1).name(), "A segunda categoria deve ser 'Rock'");
+        assertEquals("Campos do Jordão", result.get(0).name(), "A primeira cidade deve ser 'Campos do Jordão'");
+        assertEquals("São Paulo", result.get(1).name(), "A segunda cidade deve ser 'São Paulo'");
 
     }
-	
-	
+
 
 }
