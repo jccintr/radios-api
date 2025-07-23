@@ -36,13 +36,15 @@ public class CategoryService {
 		return new CategoryDTO(newCategory);
 	}
 	
+	// test ok
 	public List<CategoryDTO> findAll() {
 		List<Category> categories = repository.findAll(Sort.by("name"));
 		return categories.stream().map(CategoryDTO::new).toList();
 	}
 	
+	// test ok
 	public Page<CategoryDTO> findAllPaged(Pageable pageable) {
-		//http://localhost:8080/categories?page=0
+		
 		Pageable customPageable = PageRequest.of(
 	            pageable.getPageNumber(),
 	            10,                     
@@ -52,6 +54,7 @@ public class CategoryService {
 		return categories.map(CategoryDTO::new);
 	}
 
+	// test ok
 	public void delete(Long id) {
 		
         try {	
@@ -68,6 +71,7 @@ public class CategoryService {
 		
 	}
 
+	// tests ok
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		
@@ -89,6 +93,7 @@ public class CategoryService {
 		
 	}
 
+	// test ok
 	public CategoryDTO findById(Long id) {
 		Optional<Category> categoryO = repository.findById(id);
 		Category category = categoryO.orElseThrow(() -> new ResourceNotFoundException("Category not found id: " + id));

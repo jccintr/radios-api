@@ -133,6 +133,16 @@ INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do Alex',2,
 INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista da Maria',3,Now(),Now());
 INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Futebol',1,Now(),Now());
 
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Teste',1,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Teste 2',1,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Teste 3',1,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Teste 4',1,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Teste 5',1,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Teste 6',1,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Teste 7',1,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Teste 8',1,Now(),Now());
+INSERT INTO lists(name,user_id,created_at,updated_at) VALUES ('Lista do JC - Teste 9',1,Now(),Now());
+
 INSERT INTO list_items(list_id,radio_id) VALUES (1,1);
 INSERT INTO list_items(list_id,radio_id) VALUES (1,2);
 INSERT INTO list_items(list_id,radio_id) VALUES (1,3);

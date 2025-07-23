@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,9 +45,14 @@ public class RadioListService {
 		return new RadioListDTO(newRadioList);
 	}
 
-	public List<RadioListDTO> findAll() {
-		List<RadioList> lists = repository.findAll();
-		return lists.stream().map(RadioListDTO::new).toList();
+	public Page<RadioListDTO> findAll(Pageable pageable) {
+		Pageable customPageable = PageRequest.of(
+	            pageable.getPageNumber(),
+	            10,                     
+	            Sort.by("name").ascending() 
+	        );
+		Page<RadioList> lists = repository.findAll(customPageable);
+		return lists.map(RadioListDTO::new);
 	}
 
 	public List<RadioListDTO> findAllByOwner() {
