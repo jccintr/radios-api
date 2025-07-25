@@ -62,6 +62,14 @@ public class RadioService {
 		return radios.map(RadioDTO::new);
 	}
 	
+	public RadioDTO findById(Long id) {
+		Optional<Radio> radioO = repository.findById(id);
+		Radio radio = radioO.orElseThrow(() -> new ResourceNotFoundException("Radio not found id: "+ id));
+		
+		return new RadioDTO(radio);
+	}
+
+	
 	
 
     public void delete(Long id) {
@@ -132,13 +140,7 @@ public class RadioService {
 		
 	}
 
-	public RadioDTO findById(Long id) {
-		Optional<Radio> radioO = repository.findById(id);
-		Radio radio = radioO.orElseThrow(() -> new ResourceNotFoundException("Radio not found id: "+ id));
-		
-		return new RadioDTO(radio);
-	}
-
+	
 	
     
 

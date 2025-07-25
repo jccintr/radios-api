@@ -28,6 +28,7 @@ public class ListItemService {
 	private RadioListRepository radioListRepository;
 	@Autowired
 	private AuthService authService;
+	
 
     @Transactional
 	public ListItemDTO insert(NewListItemDTO dto) {
@@ -54,11 +55,11 @@ public class ListItemService {
     
 
 	public void delete(Long id) {
-    	
+		
     	ListItem item = repository.findById(id)
     	        .orElseThrow(() -> new ResourceNotFoundException("List Item not found id: " + id));
     	authService.isOwner(item.getList().getOwner().getId(),item.getList().getId());
-    	repository.delete(item);
+    	repository.deleteById(item.getId());
 	}
 
 }

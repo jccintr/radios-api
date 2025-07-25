@@ -69,18 +69,7 @@ public class RadioListService {
 		repository.delete(radioList);
 	}
 
-/*
-	public RadioListDTO update(Long id, NewRadioListDTO dto) {
-		try {
-			RadioList list = repository.getReferenceById(id);
-			list.setName(dto.name());
-			list = repository.save(list);
-			return new RadioListDTO(list);
-		} catch (EntityNotFoundException e) {
-			throw (new ResourceNotFoundException("Radio List not found id: " + id));
-		}
-	}
-	*/
+
 	@Transactional
 	public RadioListDTO update(Long id, NewRadioListDTO dto) {
 	    RadioList radioList = repository.findById(id)
@@ -89,7 +78,7 @@ public class RadioListService {
 	    authService.isOwner(radioList.getOwner().getId(),radioList.getId());
 	    radioList.setName(dto.name());
 
-	    // Não precisa chamar save(), pois a entidade está gerenciada e @Transactional cuida disso
+	   
 	    return new RadioListDTO(radioList);
 	}
 
