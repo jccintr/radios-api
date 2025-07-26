@@ -1,7 +1,6 @@
 package com.jcsoftware.radios.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -17,30 +16,21 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.jcsoftware.radios.entities.Category;
-import com.jcsoftware.radios.entities.City;
-import com.jcsoftware.radios.entities.Radio;
 import com.jcsoftware.radios.entities.dtos.CategoryDTO;
 import com.jcsoftware.radios.entities.dtos.NewCategoryDTO;
-import com.jcsoftware.radios.entities.dtos.RadioDTO;
-import com.jcsoftware.radios.entities.enums.State;
 import com.jcsoftware.radios.repositories.CategoryRepository;
 import com.jcsoftware.radios.services.exceptions.DatabaseIntegrityViolationException;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
-import com.jcsoftware.radios.tests.Factory;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -48,46 +38,12 @@ public class CategoryServiceTests {
 	
 	@InjectMocks
 	private CategoryService service;
-	/*
-	private Category category;
-	private CategoryDTO categoryDTO;
-	private List<Category> categoryList;
-	private PageImpl<Category> categoryPage;
-	private Long existingId;
-	private Long nonExistingId;
-	private Long dependentId;
-	private Pageable pageable;
-	*/
 	@Mock
 	private CategoryRepository repository;
 	
 	@BeforeEach
 	void setup() throws Exception {
-		/*
-		existingId = 1L;
-		nonExistingId = 1000L;
-		dependentId = 10L;
-		pageable = PageRequest.of(0, 10, Sort.by("name").ascending());
-		category = Factory.createCategory();
-		categoryDTO = Factory.createCategoryDTO(category);
-		categoryPage = new PageImpl<>(List.of(category), pageable, 1);
-		categoryList = List.of(
-	            new Category(1L, "Esportes"),
-	            new Category(2L, "Rock")
-	    );
-		
-		when(repository.findAll(any(Sort.class))).thenReturn(categoryList);
-		Mockito.when(repository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(categoryPage);
-		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(category));
-		Mockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
-		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(category);
-		Mockito.when(repository.getReferenceById(existingId)).thenReturn(category);
-		Mockito.when(repository.getReferenceById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
-		Mockito.when(repository.existsById(existingId)).thenReturn(true);
-		Mockito.when(repository.existsById(nonExistingId)).thenReturn(false);
-		Mockito.when(repository.existsById(dependentId)).thenReturn(true);
-		Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
-		*/
+	
 	}
 	
 	@Test
