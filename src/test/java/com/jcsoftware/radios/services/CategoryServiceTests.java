@@ -64,7 +64,7 @@ public class CategoryServiceTests {
 	}
 	
 	@Test
-	public void findById_ShouldReturnCategoryDTO_WhenIdExists() {
+	public void findById_ShouldReturnCategoryDTO_WhenCategoryExists() {
 		
 		Long existingId = 1L;
 		Category mockCategory = new Category(1L,"Gospel");

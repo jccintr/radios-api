@@ -1,8 +1,10 @@
 package com.jcsoftware.radios.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,17 +16,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.jcsoftware.radios.entities.City;
 import com.jcsoftware.radios.entities.dtos.CityDTO;
@@ -34,19 +33,11 @@ import com.jcsoftware.radios.repositories.CityRepository;
 import com.jcsoftware.radios.services.exceptions.DatabaseIntegrityViolationException;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class CityServiceTests {
 	
 	@InjectMocks
 	private CityService service;
-	private City city;
-	private CityDTO cityDTO;
-	private List<City> cityList;
-	private PageImpl<City> cityPage;
-	private Long existingId;
-	private Long nonExistingId;
-	private Long dependentId;
-	private Pageable pageable;
 	
 	@Mock
 	private CityRepository repository;
@@ -54,117 +45,162 @@ public class CityServiceTests {
 	@BeforeEach
 	void setup() throws Exception {
 		
-		existingId = 1L;
-		nonExistingId = 1000L;
-		dependentId = 10L;
-		pageable = PageRequest.of(0, 10, Sort.by("name").ascending());
-		city = new City(1L,"São Paulo",State.SP);
-		cityDTO = new CityDTO(city);
-		cityPage = new PageImpl<>(List.of(city), pageable, 1);
-		cityList = List.of(
-	            new City(1L, "Campos do Jordão",State.SP),
-	            new City(2L, "São Paulo",State.SP)
-	    );
-		
-		when(repository.findAll(any(Sort.class))).thenReturn(cityList);
-		Mockito.when(repository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(cityPage);
-		Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(city));
-		Mockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
-		Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(city);
-		Mockito.when(repository.getReferenceById(existingId)).thenReturn(city);
-		Mockito.when(repository.getReferenceById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
-		Mockito.when(repository.existsById(existingId)).thenReturn(true);
-		Mockito.when(repository.existsById(nonExistingId)).thenReturn(false);
-		Mockito.when(repository.existsById(dependentId)).thenReturn(true);
-		Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
-		
 	}
 	
 	@Test
-	public void insert_ShouldReturnCityDTO() {
+	public void insert_ShouldPersistCityAndReturnCityyDTO() {
+		
 		NewCityDTO newCityDTO = new NewCityDTO("São Paulo",State.SP);
+		City savedCity = new City(1L,newCityDTO.name(),newCityDTO.state());
+		
+        when(repository.save(any(City.class))).thenReturn(savedCity);
+		
 		CityDTO result = service.insert(newCityDTO);
+		
 		assertEquals(newCityDTO.name(), result.name());
 		assertEquals(newCityDTO.state(), result.state());
         verify(repository, times(1)).save(any(City.class));
-		
 	}
 	
 	@Test
-	public void findById_ShouldReturnCityDTOWhenIdExists() {
-	    CityDTO result = service.findById(existingId);
+	public void findById_ShouldReturnCityDTO_WhenCityExists() {
+		
+		Long existingId = 1L;
+		City mockedCity = new City(existingId,"Caçapava",State.SP);
+		
+		when(repository.findById(existingId)).thenReturn(Optional.of(mockedCity));
+		CityDTO result = service.findById(existingId);
+		    
 		Assertions.assertNotNull(result);
-	}
-	
-	@Test
-	public void findById_ShouldThrowResourceNotFoundExceptionOWhenIdDoesNotExists() {
-		Assertions.assertThrows(ResourceNotFoundException.class,()->{
-			service.findById(nonExistingId);
-		});
+	    assertEquals(mockedCity.getName(), result.name());
+	    assertEquals(mockedCity.getState(), result.state());
+	    verify(repository).findById(existingId);
 		
 	}
 	
 	@Test
-	public void deleteShouldDoNothingWhenIdExists() {
+	public void findById_ShouldThrowResourceNotFoundExceptionO_WhenCityDoesNotExists() {
 		
-		Assertions.assertDoesNotThrow(()->{
-			service.delete(existingId);
+		Long nonExistentId = 99L;
+		 
+		 when(repository.findById(nonExistentId)).thenReturn(Optional.empty());
+		 
+		Assertions.assertThrows(ResourceNotFoundException.class,()->{
+			service.findById(nonExistentId);
 		});
+		verify(repository).findById(nonExistentId);
 		
-		Mockito.verify(repository,Mockito.times(1)).deleteById(existingId);
 	}
 	
 	@Test
-	public void delete_ShouldThrowResourceNotFoundExceptionWhenIdDoesNotExists() {
-		Assertions.assertThrows(ResourceNotFoundException.class,()->{
-			service.delete(nonExistingId);
-		});
+	public void delete_ShouldSucceed_WhenCityyExistsAndIsNotReferenced() {
+        
+		Long validId = 5L;
+		
+        when(repository.existsById(validId)).thenReturn(true);
+		 
+		 Assertions.assertDoesNotThrow(()->service.delete(validId));
+		 
+		 verify(repository).deleteById(validId);
+		
 	}
 	
-	@Test
-	public void delete_ShouldThrowIntegrityViolationExceptionWhenDependentid() {
-		Assertions.assertThrows(DatabaseIntegrityViolationException.class,()->{
-			service.delete(dependentId);
-		});
-	}
-	
-	@Test
-	public void update_ShouldReturnCityDTOWhenIdExists() {
-		CityDTO result = service.update(existingId, cityDTO);
-		Assertions.assertNotNull(result);
-	}
-	
-	@Test
-	public void update_ShouldThrowResourceNotFoundExceptionOWhenIdDoesNotExists() {
-		Assertions.assertThrows(ResourceNotFoundException.class,()->{
-			service.update(nonExistingId, cityDTO);
-		});
-	}
-	
-	@Test
-    void findAllPaged_ShouldReturnPagedCategoryDTOs() {
+	 @Test
+	 void delete_ShouldThrowResourceNotFoundException_WhenCityyDoesNotExist() {
+		 
+         Long nonExistentId = 99L;
+		 
+		 when(repository.existsById(nonExistentId)).thenReturn(false);
+		 
+		 assertThrows(ResourceNotFoundException.class, () -> service.delete(nonExistentId));
+	     verify(repository, never()).delete(any());
+		 
+	 }
+	 
+	 @Test
+	 void delete_ShouldThrow_DatabaseIntegrityViolationException_WhenCityIsReferenced() {
+		 
+         Long referencedId = 99L;
+		 
+         when(repository.existsById(referencedId)).thenReturn(true);
+         
+         doThrow(DatabaseIntegrityViolationException.class).when(repository).deleteById(referencedId);
+         
+	     assertThrows(DatabaseIntegrityViolationException.class, () -> service.delete(referencedId));
+	     verify(repository, never()).delete(any());
+		 
+	 }
+	 
+	 @Test
+	 void update_ShouldSucceed_WhenCityExist() {
+		 
+		 Long validId = 5L;
+		 City mockedCity = new City(validId,"Caçapava",State.SP);
+		 CityDTO cityDTO = new CityDTO(mockedCity);
+		 City updatedCity = new City(validId,"Caçapava Updated",State.SP);
+		 
+		 when(repository.getReferenceById(validId)).thenReturn(mockedCity);
+		 when(repository.save(any(City.class))).thenReturn(updatedCity);
+		 
+		 CityDTO result = service.update(validId, cityDTO);
+		 
+		 Assertions.assertNotNull(result);
+		 assertEquals(validId, result.id());
+		 assertEquals(updatedCity.getName(), result.name());
+	     verify(repository).getReferenceById(validId);
+	 }
+	 
+	 @Test
+	 void update_ShouldThrowResourceNotFoundException_WhenCityDoesNotExist() {
+		 
+		 Long nonExistentId = 99L;
+		 City mockedCity = new City(nonExistentId,"Caçapava",State.SP);
+		 CityDTO cityDTO = new CityDTO(mockedCity);
+		 
+		 when(repository.getReferenceById(nonExistentId)).thenThrow(ResourceNotFoundException.class);
+	       
+		 assertThrows(ResourceNotFoundException.class, () -> service.update(nonExistentId, cityDTO));
+	     verify(repository, never()).save(any());
+		 
+	 }
+	 
+	 @Test
+	    void findAllPaged_ShouldReturnSortedPagedOfCityDTOs() {
+		 
+		 City mockedCity = new City(1L,"Caçapava",State.SP);
+		 List<City> content = List.of(mockedCity);
+	     Pageable inputPageable = PageRequest.of(0, 5);
+	     Page<City> page = new PageImpl<>(content);
+	     Pageable expectedPageable = PageRequest.of(0, 10, Sort.by("name").ascending());
+	     
+	     when(repository.findAll(expectedPageable)).thenReturn(page);
        
-        Page<CityDTO> result = service.findAllPaged(pageable);
-       
-        assertNotNull(result, "A página retornada não deve ser nula");
-        assertEquals(1, result.getTotalElements(), "O total de elementos deve ser 1");
-        assertEquals(1, result.getContent().size(), "A página deve conter 1 elemento");
-        assertEquals("São Paulo", result.getContent().get(0).name(), "O nome da cidade deve ser 'São Paulo'");
-        assertEquals(State.SP, result.getContent().get(0).state(), "O estado deve ser 'SP");
+        Page<CityDTO> result = service.findAllPaged(inputPageable);
         
-    }
+        assertEquals(1, result.getTotalElements());
+	    assertEquals(mockedCity.getName(), result.getContent().get(0).name());
+	    verify(repository).findAll(expectedPageable);
+		 
+	 }
+	 
+	 @Test
+	    void findAll_ShouldReturnSortedListOfCityDTOs() {
+		 
+		 City mockedCity1 = new City(1L,"Caçapava",State.SP);
+		 City mockedCity2 = new City(1L,"Jacareí",State.SP);
+		 Sort sort = Sort.by("name");
+		 List<City> cityList = List.of(mockedCity1, mockedCity2);
+		 
+		 when(repository.findAll(sort)).thenReturn(cityList);
+		  
+		  List<CityDTO> result = service.findAll();
+		  
+		  assertEquals(cityList.size(), result.size());
+	      assertEquals(cityList.get(0).getName(), result.get(0).name());
+	      assertEquals(cityList.get(1).getName(), result.get(1).name());
+	      verify(repository).findAll(sort);
+		 
+	 }
 	
-	@Test
-    void findAll_ShouldReturnSortedCategoryDTOs() {
-        
-        List<CityDTO> result = service.findAll();
-        
-        assertNotNull(result, "A lista retornada não deve ser nula");
-        assertEquals(2, result.size(), "A lista deve conter 2 elementos");
-        assertEquals("Campos do Jordão", result.get(0).name(), "A primeira cidade deve ser 'Campos do Jordão'");
-        assertEquals("São Paulo", result.get(1).name(), "A segunda cidade deve ser 'São Paulo'");
-
-    }
-
 
 }
