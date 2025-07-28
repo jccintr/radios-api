@@ -7,13 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +25,7 @@ import com.jcsoftware.radios.repositories.UserRepository;
 import com.jcsoftware.radios.services.exceptions.DuplicatedEmailException;
 import com.jcsoftware.radios.services.exceptions.ForbiddenException;
 import com.jcsoftware.radios.services.exceptions.ResourceNotFoundException;
-
-import jakarta.validation.Valid;
+import com.jcsoftware.radios.util.CustomUserUtil;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -43,9 +39,14 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private CustomUserUtil customUserUtil;
 	
-
-	@Override
+	
+	
+	
+    
+	@Override   // testado
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = repository.findByEmail(username);
 		if (user == null) {
@@ -54,32 +55,24 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 	
+	// testado
 	protected User auth() {
 		
 		try {
-	        String username = getLoggedUserName();
+	        String username = customUserUtil.getLoggedUserName();
 			return repository.findByEmail(username);
 		} catch (Exception e) {
-			throw new UsernameNotFoundException("Enmail not found.");
+			throw new UsernameNotFoundException("Email not found.");
 		}
 	}
 	
-	private String getLoggedUserName() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
-		return jwtPrincipal.getClaim("username");
-		
-	}
-	
+	// testado
 	@Transactional(readOnly=true)
 	public User me() {
-
 		return auth();
-		
-		
 	}
 
-	@Transactional
+	@Transactional   // testado
 	public UserDTO insert(RegisterDTO dto) {
 		
         User user = repository.findByEmail(dto.email());
@@ -100,6 +93,7 @@ public class UserService implements UserDetailsService {
 		
 	}
 	
+	// testado
 	public Page<UserWithRolesDTO> findAll(Pageable pageable) {
 		Pageable customPageable = PageRequest.of(
 	            pageable.getPageNumber(),
@@ -110,6 +104,7 @@ public class UserService implements UserDetailsService {
 		return users.map(UserWithRolesDTO::new);
 	}
 	
+	// testado
 	public UserWithRolesDTO findById(Long id) {
 		Optional<User> userO = repository.findById(id);
 		User user = userO.orElseThrow(() -> new ResourceNotFoundException("User not found id: "+ id));
@@ -117,7 +112,8 @@ public class UserService implements UserDetailsService {
 		return new UserWithRolesDTO(user);
 	}
 
-	public UserDTO update(Long id, @Valid UserUpdateDTO dto) {
+	//testado
+	public UserDTO update(Long id, UserUpdateDTO dto) {
 		
 		Optional<User> userO = repository.findById(id);
 		User user = userO.orElseThrow(() -> new ResourceNotFoundException("User not found id: " + id));
@@ -131,10 +127,14 @@ public class UserService implements UserDetailsService {
 		
 	}
 
+	// testado
 	public void delete(Long id) {
-		User user = repository.findById(id)
-    	        .orElseThrow(() -> new ResourceNotFoundException("User not found id: " + id));
-		repository.delete(user);
+		
+		if (repository.existsById(id)) {
+			repository.deleteById(id);
+		} else {
+			throw (new ResourceNotFoundException("User not found id: "+ id));
+		}
 	}
 	
 	

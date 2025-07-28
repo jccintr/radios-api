@@ -48,7 +48,7 @@ public class CityServiceTests {
 	}
 	
 	@Test
-	public void insert_ShouldPersistCityAndReturnCityyDTO() {
+	public void insert_ShouldPersistCityAndReturnCityDTO() {
 		
 		NewCityDTO newCityDTO = new NewCityDTO("São Paulo",State.SP);
 		City savedCity = new City(1L,newCityDTO.name(),newCityDTO.state());
@@ -79,7 +79,7 @@ public class CityServiceTests {
 	}
 	
 	@Test
-	public void findById_ShouldThrowResourceNotFoundExceptionO_WhenCityDoesNotExists() {
+	public void findById_ShouldThrowResourceNotFoundException_WhenCityDoesNotExists() {
 		
 		Long nonExistentId = 99L;
 		 
@@ -106,7 +106,7 @@ public class CityServiceTests {
 	}
 	
 	 @Test
-	 void delete_ShouldThrowResourceNotFoundException_WhenCityyDoesNotExist() {
+	 void delete_ShouldThrowResourceNotFoundException_WhenCityDoesNotExist() {
 		 
          Long nonExistentId = 99L;
 		 
