@@ -41,6 +41,7 @@ public class CategoryControllerIT {
 		result.andExpect(jsonPath("$.[0].name").value("Anos 80"));
 		result.andExpect(jsonPath("$.[2].name").value("Carnaval"));
 	}
+	
 	@Test
 	public void findAll_ShouldReturn_OrderedPageOfCategory() throws Exception {
 		
@@ -49,6 +50,7 @@ public class CategoryControllerIT {
 		result.andExpect(jsonPath("$.totalElements").value(20));
 		result.andExpect(jsonPath("$.content[0].name").value("Anos 80"));
 		result.andExpect(jsonPath("$.content[2].name").value("Carnaval"));
+		
 	}
 	
 	@Test

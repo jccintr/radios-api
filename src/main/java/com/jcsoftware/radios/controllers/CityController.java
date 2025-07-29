@@ -32,16 +32,6 @@ public class CityController {
 	@Autowired
 	private CityService service;
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping()
-	public ResponseEntity<CityDTO> insert(@RequestBody @Valid NewCityDTO dto){
-		CityDTO cityDTO = service.insert(dto);
-	        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-					.buildAndExpand(cityDTO.id()).toUri();
-			
-			return ResponseEntity.created(uri).body(cityDTO);
-	}
-	
 	@GetMapping(value="/all")
 	public ResponseEntity<List<CityDTO>> findAll(){
 		List<CityDTO> cities = service.findAll();
@@ -53,6 +43,17 @@ public class CityController {
 		Page<CityDTO> cities = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(cities);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping()
+	public ResponseEntity<CityDTO> insert(@RequestBody @Valid NewCityDTO dto){
+		CityDTO cityDTO = service.insert(dto);
+	        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+					.buildAndExpand(cityDTO.id()).toUri();
+			
+			return ResponseEntity.created(uri).body(cityDTO);
+	}
+			
 	
 	@GetMapping(value="/{id}")
 	public ResponseEntity<CityDTO> findById(@PathVariable Long id){
