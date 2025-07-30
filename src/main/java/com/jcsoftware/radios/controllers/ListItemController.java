@@ -26,7 +26,8 @@ public class ListItemController {
 	@Autowired
 	private ListItemService service;
 	
-	@PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
+	//@PreAuthorize("hasAnyRole('ROLE_COMMON','ROLE_ADMIN')")
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping()
 	public ResponseEntity<ListItemDTO> insert(@RequestBody @Valid NewListItemDTO dto){
 		ListItemDTO newListItem = service.insert(dto);
