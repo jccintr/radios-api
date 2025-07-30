@@ -146,6 +146,8 @@ public class CategoryControllerIT {
 						.accept(MediaType.APPLICATION_JSON));
 		
 		result.andExpect(status().isNotFound());
+		result.andExpect(jsonPath("$.error").value("Resource not found"));
+		result.andExpect(jsonPath("$.message").value("Category not found id: "+ nonExistentId));
 		
 	}
 	
@@ -245,6 +247,8 @@ public class CategoryControllerIT {
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON));
 		result.andExpect(status().isNotFound());
+		result.andExpect(jsonPath("$.error").value("Resource not found"));
+		result.andExpect(jsonPath("$.message").value("Category not found id: "+ nonExistentId));
 		
 	}
 	
