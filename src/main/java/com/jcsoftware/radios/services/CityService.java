@@ -67,7 +67,7 @@ public class CityService {
 			city = repository.save(city);
 			return new CityDTO(city);
 		} catch (EntityNotFoundException e) {
-			throw (new ResourceNotFoundException("City not found id: "+id));
+			throw (new ResourceNotFoundException("City not found id: "+ id));
 		}
 		
 	}
